@@ -1,35 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="hexWork.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="hexWork.css" />
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!-- <script src="hexWork.js"></script> -->
     <title>第二周主線任務</title>
-</head>
-<body>
+  </head>
+  <body>
     <button id="get" class="btn btn-primary">Get</button>
-</body>
+    <div id="app"></div>
+  </body>
 </html>
 <script>
-
-document.querySelector("#get").addEventListener('click',getData);
-const uuid='ffbdeffe-575b-496a-aa39-71b48c4fe29d';
-let token='';
-const apiPath='https://course-ec-api.hexschool.io/';
-
-
-function getData() { 
-var getURL=`${apiPath}api/${uuid}/ec/products`;
-var ProductList=[];
-axios.get(getURL).then(res=>{
-console.log(res);
-this.ProductList=res.data.data;
-console.log(this.ProductList);
-}
-)
-console.log(getURL);
-};
+  
+  var obj = {
+    data: {
+      uuid: "ffbdeffe-575b-496a-aa39-71b48c4fe29d",
+      token: "",
+      apiPath: "https://course-ec-api.hexschool.io/",
+      ProductList: [],
+    },
+    getData() {
+      var self=this;
+      console.log(123);
+      var getURL = `${self.data.apiPath}api/${self.data.uuid}/ec/products`;
+       console.log(getURL);
+      axios.get(getURL).then((res) => {
+        // console.log(res);
+        self.data.ProductList = res.data.data;
+        console.log(self.data.ProductList);
+        self.render();
+      });
+    },
+    render() {
+      var app = document.querySelector("#app");
+      var view = "";
+      this.data.ProductList.forEach(x => {
+        view += `
+        <div class="card">
+        <div class="card-top">
+           <div class="card-title">${x.title}</div>
+        </div>
+        <div class="card-product-img">
+            <img src=${x.imageUrl[0]} class="product-img">
+        </div>
+        <div class="card-content">
+            <div class="content-price">特價${x.price} </div>
+            <div class="content-origin-price">原價${x.origin_price} </div>
+            <div class="content-content">${x.content}</div>
+        </div>
+      </div><br>`
+      });
+      app.innerHTML = view;
+    },
+  };
+  document.querySelector("#get").addEventListener("click", obj.getData);
+  obj.getData();
 </script>
