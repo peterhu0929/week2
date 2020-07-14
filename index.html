@@ -9,13 +9,14 @@
       href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"
     />
     <link rel="stylesheet" type="text/css" href="hexWork.css" />
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+ 
     <!-- <script src="hexWork.js"></script> -->
     <title>第二周主線任務</title>
   </head>
   <body>
     <button id="get" class="btn btn-primary">Get</button>
     <div id="app"></div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </body>
 </html>
 <script>
@@ -28,15 +29,13 @@
       ProductList: [],
     },
     getData() {
-      var self=this;
-      console.log(123);
-      var getURL = `${self.data.apiPath}api/${self.data.uuid}/ec/products`;
+      var getURL = `${obj.data.apiPath}api/${obj.data.uuid}/ec/products`;
        console.log(getURL);
       axios.get(getURL).then((res) => {
         // console.log(res);
-        self.data.ProductList = res.data.data;
-        console.log(self.data.ProductList);
-        self.render();
+        obj.data.ProductList = res.data.data;
+        console.log(obj.data.ProductList);
+        obj.render();
       });
     },
     render() {
